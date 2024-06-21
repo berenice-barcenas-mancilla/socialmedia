@@ -1,1 +1,9 @@
 inicio del proyecto
+
+#INSTALACIONES
+
+npm install
+npm install -D tailwindcss postcss autoprefixer
+npx tailwindcss init -p
+npm install -D tailwindcss-animate
+npm install react-router-dom
