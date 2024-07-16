@@ -12,9 +12,10 @@ npx shadcn-ui@latest init
 npx shadcn-ui@latest add button
 npx shadcn-ui@latest add form
 npx shadcn-ui@latest add input
+npm install appwrite
+
 npm install @tanstack/react-query-devtools
 npm install @tanstack/react-query
-npm install appwrite
 npm install react-intersection-observer
 npm install react-dropzone
 npm install @tanstack/react-query-devtools @tanstack/react-query appwrite react-intersection-observer react-dropzone
@@ -24,3 +25,4 @@ rm -rf node_modules
 npm install
 npx update-browserslist-db@latest
 npm install --save-dev @types/babel__core @types/babel__generator @types/babel__template @types/babel__traverse @types/react
+        
