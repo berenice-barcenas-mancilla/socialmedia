@@ -34,6 +34,7 @@ const SigninForm = () => {
 
     if (!session) {
       toast({ title: "Error al iniciar sesión. Por favor, inténtelo de nuevo." });
+      toast({ title: "Error de inicio de sesion. Inténtalo de nuevo." });
       
       return;
     }
@@ -46,6 +47,7 @@ const SigninForm = () => {
       navigate("/");
     } else {
       toast({ title: "Error al iniciar sesión. Por favor, inténtelo de nuevo.", });
+      toast({ title: "Error de inicio de sesion. Inténtalo de nuevo.", });
       
       return;
     }
@@ -57,10 +59,10 @@ const SigninForm = () => {
         <img src="/assets/images/logo.svg" alt="logo" />
 
         <h2 className="h3-bold md:h2-bold pt-5 sm:pt-12">
-        Acceda a su cuenta
+          Ingrese a su cuenta
         </h2>
-        <p className="text-light-3 small-medium md:base-regular mt-2">
-        ¡Bienvenido de nuevo! Por favor, introduzca sus datos.
+        <p className="text-gray-900 small-medium md:base-regular mt-2">
+          ¡Bienvenido de nuevo! Por favor ingrese sus datos.
         </p>
         <form
           onSubmit={form.handleSubmit(handleSignin)}
@@ -85,6 +87,7 @@ const SigninForm = () => {
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="shad-form_label">Contraseña</FormLabel>
+                <FormLabel className="shad-form_label">Contraseña</FormLabel>
                 <FormControl>
                   <Input type="password" className="shad-input" {...field} />
                 </FormControl>
@@ -97,19 +100,20 @@ const SigninForm = () => {
             {isLoading || isUserLoading ? (
               <div className="flex-center gap-2">
                 <Loader /> Cargando...
+                <Loader /> Cargando...
               </div>
             ) : (
-              "Log in"
+              "Iniciar sesión"
             )}
           </Button>
 
-          <p className="text-small-regular text-light-2 text-center mt-2">
-          ¿No tienes cuenta?
+          <p className="text-small-regular text-lime-950 text-center mt-2">
+            ¿No tienes una cuenta?
             <Link
               to="/sign-up"
-              className="text-primary-500 text-small-semibold ml-1">
-              Regístrate
-            </Link>
+              className="text-lime-950 text-small-semibold ml-1">
+                Regístrate aquí 
+              </Link>
           </p>
         </form>
       </div>
