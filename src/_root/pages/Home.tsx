@@ -22,10 +22,10 @@ const Home = () => {
     return (
       <div className="flex flex-1">
         <div className="home-container">
-          <p className="body-medium text-light-1">Algo malo sucedió</p>
+          <p className="body-medium text-dark-1">Algo malo sucedió</p>
         </div>
         <div className="home-creators">
-          <p className="body-medium text-light-1">Algo malo sucedió</p>
+          <p className="body-medium text-dark-1">Algo malo sucedió</p>
         </div>
       </div>
     );
@@ -51,7 +51,7 @@ const Home = () => {
       </div>
 
       <div className="home-creators">
-        <h3 className="h3-bold text-light-1">Top Creatores</h3>
+        <h3 className="h3-bold text-dark-1">Top Creadores</h3>
         {isUserLoading && !creators ? (
           <Loader />
         ) : (
