@@ -151,11 +151,11 @@ const SignupForm = () => {
             )}
           </Button>
 
-          <p className="text-small-regular text-lime-950 text-center mt-2">
+          <p className="text-small-regular text-green-800 text-center mt-2">
             ¿Ya tienes una cuenta?
             <Link
               to="/sign-in"
-              className="text-lime-950 text-small-semibold ml-1">
+              className="text-green-800 text-small-semibold ml-1">
               Iniciar sesión
             </Link>
           </p>

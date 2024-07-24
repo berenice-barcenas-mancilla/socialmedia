@@ -50,15 +50,15 @@ const Home = () => {
         </div>
       </div>
 
-      <div className="home-creators">
-        <h3 className="h3-bold text-dark-1">Top Creadores</h3>
+      <div className="home-creators  ">
+        <h3 className="h3-bold text-emerald-800">Mejores Creadores</h3>
         {isUserLoading && !creators ? (
           <Loader />
         ) : (
-          <ul className="grid 2xl:grid-cols-2 gap-6">
+          <ul className="grid  2xl:grid-cols-2 gap-6 ">
             {creators?.documents.map((creator) => (
-              <li key={creator?.$id}>
-                <UserCard user={creator} />
+              <li  key={creator?.$id}  >
+                <UserCard  user={creator} />
               </li>
             ))}
           </ul>
