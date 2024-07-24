@@ -18,7 +18,7 @@ const SearchResults = ({ isSearchFetching, searchedPosts }: SearchResultProps) =
     return <GridPostList posts={searchedPosts.documents} />;
   } else {
     return (
-      <p className="text-light-4 mt-10 text-center w-full">No results found</p>
+      <p className="text-light-4 mt-10 text-center w-full">No se han encontrado resultados</p>
     );
   }
 };
@@ -52,7 +52,7 @@ const Explore = () => {
     <div className="explore-container">
       <div className="explore-inner_container">
         <h2 className="h3-bold md:h2-bold w-full">Buscar publicaciones</h2>
-        <div className="flex gap-1 px-4 w-full rounded-lg bg-dark-4">
+        <div className="flex gap-1 px-4 w-full rounded-lg bg-emerald-500">
           <img
             src="/assets/icons/search.svg"
             width={24}
@@ -61,8 +61,8 @@ const Explore = () => {
           />
           <Input
             type="text"
-            placeholder="Search"
-            className="explore-search"
+            placeholder="Buscar"
+            className="explore-search placeholder-green-100 text-green-100"          
             value={searchValue}
             onChange={(e) => {
               const { value } = e.target;
@@ -75,8 +75,8 @@ const Explore = () => {
       <div className="flex-between w-full max-w-5xl mt-16 mb-7">
         <h3 className="body-bold md:h3-bold">Popular hoy</h3>
 
-        <div className="flex-center gap-3 bg-green-600 rounded-xl px-4 py-2 cursor-pointer">
-          <p className="small-medium md:base-medium text-light-2">All</p>
+        <div className="flex-center gap-3 bg-emerald-600 rounded-xl px-4 py-2 cursor-pointer">
+          <p className="small-medium md:base-medium text-green-100">Todo</p>
           <img
             src="/assets/icons/filter.svg"
             width={20}
@@ -86,14 +86,14 @@ const Explore = () => {
         </div>
       </div>
 
-      <div className="flex flex-wrap gap-9 w-full max-w-5xl">
+      <div className="flex flex-wrap gap-9  w-full max-w-5xl">
         {shouldShowSearchResults ? (
           <SearchResults
             isSearchFetching={isSearchFetching}
             searchedPosts={searchedPosts}
           />
         ) : shouldShowPosts ? (
-          <p className="text-dark-1 mt-10 text-center w-full">Fin de las publicaciones</p>
+          <p className="text-emerald-950 mt-10 text-center w-full">Fin de las publicaciones</p>
         ) : (
           posts.pages.map((item, index) => (
             <GridPostList key={`page-${index}`} posts={item.documents} />

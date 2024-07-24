@@ -33,9 +33,7 @@ const SigninForm = () => {
     const session = await signInAccount(user);
 
     if (!session) {
-      toast({ title: "Error al iniciar sesión. Por favor, inténtelo de nuevo." });
-      toast({ title: "Error de inicio de sesion. Inténtalo de nuevo." });
-      
+      toast({ title: "Error al iniciar sesión. Por favor, inténtelo de nuevo." });      
       return;
     }
 
@@ -46,9 +44,7 @@ const SigninForm = () => {
 
       navigate("/");
     } else {
-      toast({ title: "Error al iniciar sesión. Por favor, inténtelo de nuevo.", });
-      toast({ title: "Error de inicio de sesion. Inténtalo de nuevo.", });
-      
+      toast({ title: "Error al iniciar sesión. Por favor, inténtelo de nuevo.", });      
       return;
     }
   };
@@ -87,7 +83,6 @@ const SigninForm = () => {
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="shad-form_label">Contraseña</FormLabel>
-                <FormLabel className="shad-form_label">Contraseña</FormLabel>
                 <FormControl>
                   <Input type="password" className="shad-input" {...field} />
                 </FormControl>
@@ -100,18 +95,17 @@ const SigninForm = () => {
             {isLoading || isUserLoading ? (
               <div className="flex-center gap-2">
                 <Loader /> Cargando...
-                <Loader /> Cargando...
               </div>
             ) : (
               "Iniciar sesión"
             )}
           </Button>
 
-          <p className="text-small-regular text-lime-950 text-center mt-2">
+          <p className="text-small-regular text-green-800 text-center mt-2">
             ¿No tienes una cuenta?
             <Link
               to="/sign-up"
-              className="text-lime-950 text-small-semibold ml-1">
+              className="text-green-800 text-small-semibold ml-1">
                 Regístrate aquí 
               </Link>
           </p>
