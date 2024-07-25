@@ -45,9 +45,16 @@ export const useSignInAccount = () => {
   });
 };
 
+// Auth Queries
 export const useSignOutAccount = () => {
   return useMutation({
-    mutationFn: signOutAccount,
+    mutationFn: async () => {
+      await signOutAccount();
+      localStorage.setItem("isLoggedOut", Date.now().toString()); // Indicador de cierre de sesión
+    },
+    onSuccess: () => {
+      // Puedes realizar otras acciones en caso de éxito si es necesario
+    },
   });
 };
 

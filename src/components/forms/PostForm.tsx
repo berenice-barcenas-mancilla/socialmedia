@@ -23,7 +23,7 @@ import { useCreatePost, useUpdatePost } from "@/lib/react-query/queries";
 
 type PostFormProps = {
   post?: Models.Document;
-  action: "Create" | "Update";
+  action: "Creación" | "Actualización";
 };
 
 const PostForm = ({ post, action }: PostFormProps) => {
@@ -49,7 +49,7 @@ const PostForm = ({ post, action }: PostFormProps) => {
   // Handler
   const handleSubmit = async (value: z.infer<typeof PostValidation>) => {
     // ACTION = UPDATE
-    if (post && action === "Update") {
+    if (post && action === "Actualización") {
       const updatedPost = await updatePost({
         ...value,
         postId: post.$id,
@@ -59,7 +59,7 @@ const PostForm = ({ post, action }: PostFormProps) => {
 
       if (!updatedPost) {
         toast({
-          title: `${action} post failed. Please try again.`,
+          title: `${action} de la publicación fallida. Por favor, inténtelo de nuevo.`,
         });
       }
       return navigate(`/posts/${post.$id}`);
@@ -73,7 +73,7 @@ const PostForm = ({ post, action }: PostFormProps) => {
 
     if (!newPost) {
       toast({
-        title: `${action} post failed. Please try again.`,
+        title: `${action} de la publicación fallida. Por favor, inténtelo de nuevo.`,
       });
     }
     navigate("/");
