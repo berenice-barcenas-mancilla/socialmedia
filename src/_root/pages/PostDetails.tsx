@@ -73,7 +73,7 @@ const PostDetails = () => {
                   className="w-8 h-8 lg:w-12 lg:h-12 rounded-full"
                 />
                 <div className="flex gap-1 flex-col">
-                  <p className="base-medium lg:body-bold text-light-3">
+                  <p className="base-medium lg:body text-emerald-950">
                     {post?.creator.name}
                   </p>
                   <div className="flex-center gap-2 text-dark-3">
@@ -103,7 +103,7 @@ const PostDetails = () => {
                 <Button
                   onClick={handleDeletePost}
                   variant="ghost"
-                  className={`ost_details-delete_btn ${
+                  className={`ost_details-delete_btn hover:bg-red ${
                     user.id !== post?.creator.$id && "hidden"
                   }`}>
                   <img
@@ -116,15 +116,15 @@ const PostDetails = () => {
               </div>
             </div>
 
-            <hr className="border w-full border-emerald-900" />
+            <hr className="border w-full border-stone-100" />
 
-            <div className="flex flex-col flex-1 w-full small-medium lg:base-regular">
+            <div className="flex flex-col flex-1 w-full text-lg font-semibold text-dark-3">
               <p>{post?.caption}</p>
               <ul className="flex gap-1 mt-2">
                 {post?.tags.map((tag: string, index: string) => (
                   <li
                     key={`${tag}${index}`}
-                    className="text-light-4 small-regular">
+                    className="text-emerald-900 small-regular">
                     #{tag}
                   </li>
                 ))}
@@ -139,7 +139,7 @@ const PostDetails = () => {
       )}
 
       <div className="w-full max-w-5xl">
-        <hr className="border w-full border-emerald-800" />
+        <hr className="border w-full border-emerald-700" />
 
         <h3 className="body-bold md:h3-bold w-full my-10">
         Más publicaciones relacionadas

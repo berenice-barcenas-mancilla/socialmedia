@@ -46,11 +46,11 @@ export const ProfileValidation = z.object({
 // ============================================================
 export const PostValidation = z.object({
   caption: z.string()
-    .min(5, { message: "Minimum 5 characters." })
-    .max(2200, { message: "Maximum 2,200 characters" }),
+    .min(5, { message: "Mínimo 5 caracteres." })
+    .max(2200, { message: "Máximo 2.200 caracteres" }),
   file: z.custom<File[]>(),
   location: z.string()
-    .min(1, { message: "This field is required" })
-    .max(1000, { message: "Maximum 1000 characters." }),
+    .min(1, { message: "Este campo es obligatorio" })
+    .max(1000, { message: "Máximo 1000 caracteres." }),
   tags: z.string(),
 });
