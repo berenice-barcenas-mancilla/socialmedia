@@ -12,7 +12,7 @@ type PostCardProps = {
 const PostCard = ({ post }: PostCardProps) => {
   const { user } = useUserContext();
 
-  if (!post.creator) return;
+  if (!post.creator) return null; // Cambiado a `null` en lugar de `return` para evitar renderizado vacío
 
   return (
     <div className="post-card">
@@ -30,7 +30,7 @@ const PostCard = ({ post }: PostCardProps) => {
           </Link>
 
           <div className="flex flex-col">
-            <p className="base-medium lg:body-bold text-emerald-800">
+            <p className=" text-dark-2 font-semibold text-base">
               {post.creator.name}
             </p>
             <div className="flex-center gap-2 text-dark-1">
@@ -59,8 +59,9 @@ const PostCard = ({ post }: PostCardProps) => {
 
       <Link to={`/posts/${post.$id}`}>
         <div className="small-medium lg:base-medium py-5">
-          <p>{post.caption}</p>
-          <ul className="flex gap-1 mt-2">
+          <p className="text-dark-1 font-bold text-lg">{post.caption}</p>
+          <p className="mt-2 text-emerald-950 text-sm">{post.description}</p>
+          <ul className="flex gap-1 mt-2 text-xs">
             {post.tags.map((tag: string, index: string) => (
               <li key={`${tag}${index}`} className="text-stone-700 small-regular">
                 #{tag}

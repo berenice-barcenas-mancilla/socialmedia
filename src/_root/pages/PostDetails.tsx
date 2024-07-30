@@ -73,7 +73,7 @@ const PostDetails = () => {
                   className="w-8 h-8 lg:w-12 lg:h-12 rounded-full"
                 />
                 <div className="flex gap-1 flex-col">
-                  <p className="base-medium lg:body text-emerald-950">
+                  <p className=" text-dark-2 font-semibold text-base">
                     {post?.creator.name}
                   </p>
                   <div className="flex-center gap-2 text-dark-3">
@@ -119,8 +119,9 @@ const PostDetails = () => {
             <hr className="border w-full border-stone-100" />
 
             <div className="flex flex-col flex-1 w-full text-lg font-semibold text-dark-3">
-              <p>{post?.caption}</p>
-              <ul className="flex gap-1 mt-2">
+              <p className="text-dark-1 font-bold text-lg">{post?.caption}</p>
+              <p className="mt-2 text-emerald-950 text-sm">{post.description}</p>
+              <ul className="flex gap-1 mt-2 text-xs">
                 {post?.tags.map((tag: string, index: string) => (
                   <li
                     key={`${tag}${index}`}
@@ -131,7 +132,7 @@ const PostDetails = () => {
               </ul>
             </div>
 
-            <div className="w-full">
+            <div className="w-full text-dark-1">
               <PostStats post={post} userId={user.id} />
             </div>
           </div>
