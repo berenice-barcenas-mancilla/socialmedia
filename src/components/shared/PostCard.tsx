@@ -12,7 +12,7 @@ type PostCardProps = {
 const PostCard = ({ post }: PostCardProps) => {
   const { user } = useUserContext();
 
-  if (!post.creator) return null; // Cambiado a `null` en lugar de `return` para evitar renderizado vacío
+  if (!post.creator) return null;
 
   return (
     <div className="post-card">
@@ -30,11 +30,11 @@ const PostCard = ({ post }: PostCardProps) => {
           </Link>
 
           <div className="flex flex-col">
-            <p className=" text-dark-2 font-semibold text-base">
+            <p className="text-dark-2 font-semibold text-base">
               {post.creator.name}
             </p>
             <div className="flex-center gap-2 text-dark-1">
-              <p className="subtle-semibold lg:small-regular ">
+              <p className="subtle-semibold lg:small-regular">
                 {multiFormatDateString(post.$createdAt)}
               </p>
               •
@@ -49,7 +49,7 @@ const PostCard = ({ post }: PostCardProps) => {
           to={`/update-post/${post.$id}`}
           className={`${user.id !== post.creator.$id && "hidden"}`}>
           <img
-            src={"/assets/icons/edit.svg"}
+            src="/assets/icons/edit.svg"
             alt="edit"
             width={20}
             height={20}
@@ -62,7 +62,7 @@ const PostCard = ({ post }: PostCardProps) => {
           <p className="text-dark-1 font-bold text-lg">{post.caption}</p>
           <p className="mt-2 text-emerald-950 text-sm">{post.description}</p>
           <ul className="flex gap-1 mt-2 text-xs">
-            {post.tags.map((tag: string, index: string) => (
+            {post.tags.map((tag: string, index: number) => (
               <li key={`${tag}${index}`} className="text-stone-700 small-regular">
                 #{tag}
               </li>
@@ -70,11 +70,13 @@ const PostCard = ({ post }: PostCardProps) => {
           </ul>
         </div>
 
-        <img
-          src={post.imageUrl || "/assets/icons/profile-placeholder.svg"}
-          alt="post image"
-          className="post-card_img"
-        />
+        {post.imageUrl && (
+          <img
+            src={post.imageUrl}
+            alt="post image"
+            className="post-card_img"
+          />
+        )}
       </Link>
 
       <PostStats post={post} userId={user.id} />
