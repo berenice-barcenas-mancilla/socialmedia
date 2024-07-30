@@ -38,14 +38,14 @@ const PostDetails = () => {
         <Button
           onClick={() => navigate(-1)}
           variant="ghost"
-          className="shad-button_ghost">
+          className="shad-button_ghost ">
           <img
             src={"/assets/icons/back.svg"}
             alt="back"
             width={24}
             height={24}
           />
-          <p className="small-medium lg:base-medium">Atrás</p>
+          <p className="small-medium lg:base-medium hover:text-green-900">Atrás</p>
         </Button>
       </div>
 
