@@ -101,6 +101,24 @@ const PostForm = ({ post, action }: PostFormProps) => {
           )}
         />
 
+
+        <FormField
+          control={form.control}
+          name="description"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="shad-form_label">Descripción</FormLabel>
+              <FormControl>
+                <Textarea
+                  className="shad-textarea custom-scrollbar"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage className="shad-form_message" />
+            </FormItem>
+          )}
+        />
+
         <FormField
           control={form.control}
           name="file"
@@ -138,13 +156,13 @@ const PostForm = ({ post, action }: PostFormProps) => {
           render={({ field }) => (
             <FormItem>
               <FormLabel className="shad-form_label">
-              Agregar etiquetas (separadas por coma " , ")
+                Agregar etiquetas (separadas por coma " , ")
               </FormLabel>
               <FormControl>
                 <Input
-                  placeholder="Art, Expression, Learn"
+                  placeholder=" Noticias, Reciclaje"
                   type="text"
-                  className="shad-input text-light-4"
+                  className="shad-input text-stone-700"
                   {...field}
                 />
               </FormControl>
