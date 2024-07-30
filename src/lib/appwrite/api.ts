@@ -132,8 +132,8 @@ export async function createPost(post: INewPost) {
       throw Error;
     }
 
-    // Convert tags into array
-    const tags = post.tags?.replace(/ /g, "").split(",") || [];
+    // Convert tags into array and make them lowercase
+    const tags = post.tags?.replace(/ /g, "").split(",").map(tag => tag.toLowerCase()) || [];
 
     // Create post
     const newPost = await databases.createDocument(
@@ -210,10 +210,13 @@ export async function deleteFile(fileId: string) {
 // ============================== GET POSTS
 export async function searchPosts(searchTerm: string) {
   try {
+    // Convertir el término de búsqueda a minúsculas
+    const lowercasedSearchTerm = searchTerm.toLowerCase();
+
     const posts = await databases.listDocuments(
       appwriteConfig.databaseId,
       appwriteConfig.postCollectionId,
-      [Query.search("caption", searchTerm)]
+      [Query.search("tags", lowercasedSearchTerm)]
     );
 
     if (!posts) throw Error;
