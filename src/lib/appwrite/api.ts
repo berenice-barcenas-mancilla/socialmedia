@@ -120,16 +120,21 @@ export async function signOutAccount() {
 // ============================== CREATE POST
 export async function createPost(post: INewPost) {
   try {
-    // Upload file to appwrite storage
-    const uploadedFile = await uploadFile(post.file[0]);
+    let fileUrl = null;
+    let uploadedFile = null;
 
-    if (!uploadedFile) throw Error;
+    if (post.file && post.file.length > 0) {
+      // Upload file to appwrite storage
+      uploadedFile = await uploadFile(post.file[0]);
 
-    // Get file url
-    const fileUrl = getFilePreview(uploadedFile.$id);
-    if (!fileUrl) {
-      await deleteFile(uploadedFile.$id);
-      throw Error;
+      if (!uploadedFile) throw Error;
+
+      // Get file url
+      fileUrl = getFilePreview(uploadedFile.$id);
+      if (!fileUrl) {
+        await deleteFile(uploadedFile.$id);
+        throw Error;
+      }
     }
 
     // Convert tags into array and make them lowercase
@@ -145,13 +150,13 @@ export async function createPost(post: INewPost) {
         caption: post.caption,
         description: post.description,
         imageUrl: fileUrl,
-        imageId: uploadedFile.$id,
+        imageId: uploadedFile ? uploadedFile.$id : null,
         location: post.location,
         tags: tags,
       }
     );
 
-    if (!newPost) {
+    if (!newPost && uploadedFile) {
       await deleteFile(uploadedFile.$id);
       throw Error;
     }
@@ -161,6 +166,7 @@ export async function createPost(post: INewPost) {
     console.log(error);
   }
 }
+
 
 // ============================== UPLOAD FILE
 export async function uploadFile(file: File) {
