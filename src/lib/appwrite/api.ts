@@ -310,6 +310,7 @@ export async function updatePost(post: IUpdatePost) {
       post.postId,
       {
         caption: post.caption,
+        description: post.description,
         imageUrl: image.imageUrl,
         imageId: image.imageId,
         location: post.location,
@@ -338,6 +339,7 @@ export async function updatePost(post: IUpdatePost) {
     console.log(error);
   }
 }
+
 
 // ============================== DELETE POST
 export async function deletePost(postId?: string, imageId?: string) {
