@@ -57,6 +57,13 @@ const EditPost = () => {
   }, [post, form]);
 
   const handleSubmit = async (values: IEditPostForm) => {
+    if (!post) {
+      toast({
+        title: "No se pudo encontrar la publicación. Por favor, inténtelo de nuevo.",
+      });
+      return;
+    }
+
     const updatedPost = await updatePost({
       ...values,
       postId: post.$id,
