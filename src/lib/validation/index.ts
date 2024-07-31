@@ -55,3 +55,4 @@ export const PostValidation = z.object({
     .max(1000, { message: "Máximo 1000 caracteres." }),
   tags: z.string(),
 });
+
