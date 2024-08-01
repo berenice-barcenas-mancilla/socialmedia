@@ -1,3 +1,4 @@
+import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -29,7 +30,7 @@ const SignupForm = () => {
   const { mutateAsync: createUserAccount, isLoading: isCreatingAccount } = useCreateUserAccount();
   const { mutateAsync: signInAccount, isLoading: isSigningInUser } = useSignInAccount();
 
-  const handleSignup = async (user) => {
+  const handleSignup = async (user: z.infer<typeof SignupValidation>) => {
     try {
       const newUser = await createUserAccount(user);
       if (!newUser) {
