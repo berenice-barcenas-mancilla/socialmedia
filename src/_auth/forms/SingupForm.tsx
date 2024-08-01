@@ -1,14 +1,11 @@
-import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
-
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Loader from "@/components/shared/Loader";
 import { useToast } from "@/components/ui/use-toast";
-
 import { useCreateUserAccount, useSignInAccount } from "@/lib/react-query/queries";
 import { SignupValidation } from "@/lib/validation";
 import { useUserContext } from "@/context/AuthContext";
@@ -18,8 +15,9 @@ const SignupForm = () => {
   const navigate = useNavigate();
   const { checkAuthUser, isLoading: isUserLoading } = useUserContext();
 
-  const form = useForm<z.infer<typeof SignupValidation>>({
+  const form = useForm({
     resolver: zodResolver(SignupValidation),
+    mode: "onChange", // Validaciones en tiempo real
     defaultValues: {
       name: "",
       username: "",
@@ -28,18 +26,14 @@ const SignupForm = () => {
     },
   });
 
-  // Queries
   const { mutateAsync: createUserAccount, isLoading: isCreatingAccount } = useCreateUserAccount();
   const { mutateAsync: signInAccount, isLoading: isSigningInUser } = useSignInAccount();
 
-  // Handler
-  const handleSignup = async (user: z.infer<typeof SignupValidation>) => {
+  const handleSignup = async (user) => {
     try {
       const newUser = await createUserAccount(user);
-
       if (!newUser) {
-        toast({ title: "El registro ha fallado. Por favor, inténtelo de nuevo.", });
-        
+        toast({ title: "El registro ha fallado. Por favor, inténtelo de nuevo." });
         return;
       }
 
@@ -47,24 +41,18 @@ const SignupForm = () => {
         email: user.email,
         password: user.password,
       });
-
       if (!session) {
-        toast({ title: "Algo ha ido mal. Por favor ingrese su nueva cuenta.", });
-        
+        toast({ title: "Algo ha ido mal. Por favor ingrese su nueva cuenta." });
         navigate("/sign-in");
-        
         return;
       }
 
       const isLoggedIn = await checkAuthUser();
-
       if (isLoggedIn) {
         form.reset();
-
         navigate("/");
       } else {
-        toast({ title: "Error al iniciar sesión.Por favor, inténtelo de nuevo.", });
-        
+        toast({ title: "Error al iniciar sesión. Por favor, inténtelo de nuevo." });
         return;
       }
     } catch (error) {
@@ -153,9 +141,7 @@ const SignupForm = () => {
 
           <p className="text-small-regular text-green-800 text-center mt-2">
             ¿Ya tienes una cuenta?
-            <Link
-              to="/sign-in"
-              className="text-green-800 text-small-semibold ml-1">
+            <Link to="/sign-in" className="text-green-800 text-small-semibold ml-1">
               Iniciar sesión
             </Link>
           </p>
