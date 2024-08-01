@@ -76,7 +76,7 @@ const PostForm = ({ post, action }: PostFormProps) => {
           }
         );
       } else {
-        reject(new Error("Geolocation is not supported by this browser."));
+        reject(new Error("La geolocalización no es compatible con este navegador."));
       }
     });
   };
@@ -207,7 +207,7 @@ const PostForm = ({ post, action }: PostFormProps) => {
               </FormLabel>
               <FormControl>
                 <Input
-                  placeholder=" Noticias, Reciclaje"
+                  placeholder="HablemosVerde, EcoSoluciones, Reciclaje, Noticias"
                   type="text"
                   className="shad-input text-stone-700"
                   {...field}
