@@ -20,6 +20,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { useUserContext } from "@/context/AuthContext";
 import { FileUploader, Loader } from "@/components/shared";
 import { useCreatePost, useUpdatePost } from "@/lib/react-query/queries";
+import { useEffect } from "react";
 
 type PostFormProps = {
   post?: Models.Document;
@@ -41,10 +42,57 @@ const PostForm = ({ post, action }: PostFormProps) => {
   });
 
   // Query
-  const { mutateAsync: createPost, isLoading: isLoadingCreate } =
-    useCreatePost();
-  const { mutateAsync: updatePost, isLoading: isLoadingUpdate } =
-    useUpdatePost();
+  const { mutateAsync: createPost, isLoading: isLoadingCreate } = useCreatePost();
+  const { mutateAsync: updatePost, isLoading: isLoadingUpdate } = useUpdatePost();
+
+  // Obtener ubicación del usuario y convertirla a nombre de ubicación
+  useEffect(() => {
+    if (!post) {
+      getUserLocation()
+        .then(async (location) => {
+          const address = await getAddressFromCoordinates(location.lat, location.lon);
+          form.setValue("location", address);
+        })
+        .catch((error) => {
+          toast({
+            title: "No se pudo obtener la ubicación",
+            description: error.message,
+          });
+        });
+    }
+  }, [post, form, toast]);
+
+  const getUserLocation = () => {
+    return new Promise<{ lat: number; lon: number }>((resolve, reject) => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+            resolve({ lat, lon });
+          },
+          (error) => {
+            reject(error);
+          }
+        );
+      } else {
+        reject(new Error("Geolocation is not supported by this browser."));
+      }
+    });
+  };
+
+  const getAddressFromCoordinates = async (lat: number, lon: number) => {
+    const response = await fetch(
+      `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`
+    );
+    const data = await response.json();
+
+    // Excluir código postal y país de la dirección
+    const addressParts = data.display_name.split(", ");
+    const filteredAddress = addressParts.filter((part: string) => !/^\d{5}(-\d{4})?$/.test(part) && part !== data.address.country).join(", ");
+    
+    return filteredAddress;
+  };
 
   // Handler
   const handleSubmit = async (value: z.infer<typeof PostValidation>) => {
@@ -83,7 +131,7 @@ const PostForm = ({ post, action }: PostFormProps) => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(handleSubmit)}
-        className="flex flex-col gap-9 w-full  max-w-5xl">
+        className="flex flex-col gap-9 w-full max-w-5xl">
         <FormField
           control={form.control}
           name="caption"
@@ -100,7 +148,6 @@ const PostForm = ({ post, action }: PostFormProps) => {
             </FormItem>
           )}
         />
-
 
         <FormField
           control={form.control}
@@ -143,7 +190,7 @@ const PostForm = ({ post, action }: PostFormProps) => {
             <FormItem>
               <FormLabel className="shad-form_label">Agregar Ubicación</FormLabel>
               <FormControl>
-                <Input type="text" className="shad-input" {...field} />
+                <Input type="text" className="shad-input" {...field} readOnly />
               </FormControl>
               <FormMessage className="shad-form_message" />
             </FormItem>
@@ -174,7 +221,7 @@ const PostForm = ({ post, action }: PostFormProps) => {
         <div className="flex gap-4 items-center justify-end">
           <Button
             type="button"
-            className=" bg-rose-600 hover:bg-rose-700 text-light-1 "
+            className="bg-rose-600 hover:bg-rose-700 text-light-1"
             onClick={() => navigate(-1)}>
             Cancel
           </Button>
