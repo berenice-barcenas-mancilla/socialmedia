@@ -26,7 +26,7 @@ const Saved = () => {
       ) : (
         <ul className="w-full flex justify-center max-w-5xl gap-9">
           {savePosts.length === 0 ? (
-            <p className="text-light-4">No hay publicaciones disponibles
+            <p className="text-light-4">No hay publicaciones guardadas en este momento.
             </p>
           ) : (
             <GridPostList posts={savePosts} showStats={false} />
