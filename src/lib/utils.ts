@@ -49,7 +49,7 @@ export const multiFormatDateString = (timestamp: string = ""): string => {
     case Math.floor(diffInMinutes) >= 1:
       return `hace ${Math.floor(diffInMinutes)} minutos`;
     default:
-      return "Just now";
+      return "Ahora mismo";
   }
 };
 

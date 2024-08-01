@@ -160,7 +160,7 @@ const EditPost = () => {
                 <FormItem>
                   <FormLabel className="shad-form_label">Agregar Ubicación</FormLabel>
                   <FormControl>
-                    <Input type="text" className="shad-input" {...field} />
+                    <Input type="text" readOnly className="shad-input" {...field} />
                   </FormControl>
                   <FormMessage className="shad-form_message" />
                 </FormItem>
