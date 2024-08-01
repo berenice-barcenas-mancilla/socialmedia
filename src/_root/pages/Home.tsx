@@ -35,7 +35,7 @@ const Home = () => {
     <div className="flex flex-1">
       <div className="home-container">
         <div className="home-posts">
-          <h2 className="h3-bold md:h2-bold text-left w-full">Bienvenido</h2>
+          <h2 className="h3-bold md:h2-bold text-left w-full">Hagamos eco de las soluciones ambientales</h2>
           {isPostLoading && !posts ? (
             <Loader />
           ) : (
