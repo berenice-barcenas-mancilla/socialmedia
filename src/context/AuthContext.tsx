@@ -45,7 +45,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     await signOutAccount();
     setUser(INITIAL_USER);
     setIsAuthenticated(false);
-    localStorage.removeItem("cookieFallback");
+    localStorage.removeItem("loginTimestamp");
     localStorage.setItem("isLoggedOut", Date.now().toString()); // Indicador de cierre de sesión
     navigate("/sign-in");
   };
@@ -55,6 +55,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       const currentAccount = await getCurrentUser();
       if (currentAccount) {
+        const loginTimestamp = localStorage.getItem("loginTimestamp");
+        const currentTime = Date.now();
+        const sessionDuration = 2 * 60 * 1000; // 20 minutos
+        //donde 1000 es el valor en milisegundos, 60 es el valor en segundos y 20 es el valor en minutos
+        //si quiero poner que dure 2 minutos sería 2*60*1000
+
+        if (loginTimestamp && currentTime - parseInt(loginTimestamp) > sessionDuration) {
+          logout();
+          return false;
+        }
+
         setUser({
           id: currentAccount.$id,
           name: currentAccount.name,
@@ -65,9 +76,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         });
         setIsAuthenticated(true);
 
-        setTimeout(() => {
-          logout();
-        }, 2 * 60 * 10000); // son 20 minutos
+        // Almacenar la hora de inicio de sesión
+        if (!loginTimestamp) {
+          localStorage.setItem("loginTimestamp", currentTime.toString());
+        }
+
         return true;
       }
       return false;
