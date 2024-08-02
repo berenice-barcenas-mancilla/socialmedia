@@ -15,6 +15,7 @@ import AuthLayout from "./_auth/AuthLayout";
 import RootLayout from "./_root/RootLayot";
 import SigninForm from "./_auth/forms/SinginForm";
 import SignupForm from "./_auth/forms/SingupForm";
+import PrivateRoute from "./components/PrivateRoute";
 import { Toaster } from "@/components/ui/toaster";
 
 import "./globals.css";
@@ -30,6 +31,7 @@ const App = () => {
         </Route>
 
         {/* private routes */}
+        <Route element={<PrivateRoute />}> 
         <Route element={<RootLayout />}>
           <Route index element={<Home />} />
           <Route path="/explore" element={<Explore />} />
@@ -40,6 +42,7 @@ const App = () => {
           <Route path="/posts/:id" element={<PostDetails />} />
           <Route path="/profile/:id/*" element={<Profile />} />
           <Route path="/update-profile/:id" element={<UpdateProfile />} />
+        </Route>
         </Route>
       </Routes>
 
