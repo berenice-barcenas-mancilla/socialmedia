@@ -82,17 +82,23 @@ const PostForm = ({ post, action }: PostFormProps) => {
   };
 
   const getAddressFromCoordinates = async (lat: number, lon: number) => {
-    const response = await fetch(
-      `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`
-    );
-    const data = await response.json();
-
-    // Excluir código postal y país de la dirección
-    const addressParts = data.display_name.split(", ");
-    const filteredAddress = addressParts.filter((part: string) => !/^\d{5}(-\d{4})?$/.test(part) && part !== data.address.country).join(", ");
-    
-    return filteredAddress;
+    try {
+      const response = await fetch(
+        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`
+      );
+      const data = await response.json();
+  
+      // Verificar si city y state existen en la respuesta
+      const city = data.address.city || data.address.town || data.address.village || "Desconocido";
+      const state = data.address.state || "Desconocido";
+  
+      return `${city}, ${state}`;
+    } catch (error) {
+      console.error("Error fetching address:", error);
+      return "Ubicación desconocida";
+    }
   };
+  
 
   // Handler
   const handleSubmit = async (value: z.infer<typeof PostValidation>) => {
@@ -190,7 +196,7 @@ const PostForm = ({ post, action }: PostFormProps) => {
             <FormItem>
               <FormLabel className="shad-form_label">Agregar Ubicación</FormLabel>
               <FormControl>
-                <Input type="text" className="shad-input" {...field} readOnly />
+                <Input type="text" className="shad-input" {...field}  />
               </FormControl>
               <FormMessage className="shad-form_message" />
             </FormItem>
