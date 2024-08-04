@@ -48,8 +48,4 @@ export const PostValidation = z.object({
     .max(2200, { message: "Máximo 2.200 caracteres" }),
   description: z.string().min(1, "Descripción es requerida"),  // Agrega esta validación
   file: z.custom<File[]>(),
-  location: z.string()
-    .min(1, { message: "Este campo es obligatorio" })
-    .max(1000, { message: "Máximo 1000 caracteres." }),
-  tags: z.string(),
 });

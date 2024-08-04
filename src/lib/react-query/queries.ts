@@ -25,6 +25,10 @@ import {
   searchPosts,
   savePost,
   deleteSavedPost,
+  followUser,
+  unfollowUser,
+  getUserFollowers,
+  getUserFollowing,
 } from "@/lib/appwrite/api";
 import { INewPost, INewUser, IUpdatePost, IUpdateUser } from "@/types";
 
@@ -249,5 +253,64 @@ export const useUpdateUser = () => {
         queryKey: [QUERY_KEYS.GET_USER_BY_ID, data?.$id],
       });
     },
+  });
+};
+
+export const useFollowUser = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ followerId, followedId }: { followerId: string; followedId: string }) =>
+      followUser(followerId, followedId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_USER_BY_ID],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_CURRENT_USER],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_USER_FOLLOWERS],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_USER_FOLLOWING],
+      });
+    },
+  });
+};
+
+export const useUnfollowUser = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (followId: string) => unfollowUser(followId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_USER_BY_ID],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_CURRENT_USER],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_USER_FOLLOWERS],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_USER_FOLLOWING],
+      });
+    },
+  });
+};
+
+export const useGetUserFollowers = (userId: string) => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_USER_FOLLOWERS, userId],
+    queryFn: () => getUserFollowers(userId),
+    enabled: !!userId,
+  });
+};
+
+export const useGetUserFollowing = (userId: string) => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_USER_FOLLOWING, userId],
+    queryFn: () => getUserFollowing(userId),
+    enabled: !!userId,
   });
 };
