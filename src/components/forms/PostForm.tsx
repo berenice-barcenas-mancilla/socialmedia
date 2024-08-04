@@ -22,19 +22,26 @@ import { FileUploader, Loader } from "@/components/shared";
 import { useCreatePost, useUpdatePost } from "@/lib/react-query/queries";
 import { useEffect } from "react";
 
+// Extend the PostValidation schema to include location and tags
+const ExtendedPostValidation = PostValidation.extend({
+  location: z.string().optional(),
+  tags: z.string().optional(),
+});
+
 type PostFormProps = {
   post?: Models.Document;
-  action: "Creación" | "Actualización";
+  action: "Crear" | "Actualización";
 };
 
 const PostForm = ({ post, action }: PostFormProps) => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { user } = useUserContext();
-  const form = useForm<z.infer<typeof PostValidation>>({
-    resolver: zodResolver(PostValidation),
+  const form = useForm<z.infer<typeof ExtendedPostValidation>>({
+    resolver: zodResolver(ExtendedPostValidation),
     defaultValues: {
       caption: post ? post?.caption : "",
+      description: post ? post.description : "",
       file: [],
       location: post ? post.location : "",
       tags: post ? post.tags.join(",") : "",
@@ -87,21 +94,20 @@ const PostForm = ({ post, action }: PostFormProps) => {
         `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`
       );
       const data = await response.json();
-  
+
       // Verificar si city y state existen en la respuesta
       const city = data.address.city || data.address.town || data.address.village || "Desconocido";
       const state = data.address.state || "Desconocido";
-  
+
       return `${city}, ${state}`;
     } catch (error) {
       console.error("Error fetching address:", error);
       return "Ubicación desconocida";
     }
   };
-  
 
   // Handler
-  const handleSubmit = async (value: z.infer<typeof PostValidation>) => {
+  const handleSubmit = async (value: z.infer<typeof ExtendedPostValidation>) => {
     // ACTION = UPDATE
     if (post && action === "Actualización") {
       const updatedPost = await updatePost({
@@ -196,7 +202,7 @@ const PostForm = ({ post, action }: PostFormProps) => {
             <FormItem>
               <FormLabel className="shad-form_label">Agregar Ubicación</FormLabel>
               <FormControl>
-                <Input type="text" className="shad-input" {...field}  />
+                <Input type="text" className="shad-input" {...field} />
               </FormControl>
               <FormMessage className="shad-form_message" />
             </FormItem>
@@ -229,7 +235,7 @@ const PostForm = ({ post, action }: PostFormProps) => {
             type="button"
             className="bg-rose-600 hover:bg-rose-700 text-light-1"
             onClick={() => navigate(-1)}>
-            Cancel
+            Cancelar
           </Button>
           <Button
             type="submit"
