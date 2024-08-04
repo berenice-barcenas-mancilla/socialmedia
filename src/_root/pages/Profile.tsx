@@ -60,6 +60,8 @@ const Profile = () => {
     } else {
       followUser({ followerId: user.id, followedId: id || "" });
     }
+    // Actualiza el estado local inmediatamente para una mejor experiencia de usuario
+    setIsFollowing(!isFollowing);
   };
 
   if (isUserLoading || isFollowersLoading || isFollowingLoading) return <Loader />;

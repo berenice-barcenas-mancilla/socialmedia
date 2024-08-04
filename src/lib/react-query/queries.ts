@@ -256,11 +256,6 @@ export const useUpdateUser = () => {
   });
 };
 
-
-
-
-
-
 export const useFollowUser = () => {
   const queryClient = useQueryClient();
   return useMutation({

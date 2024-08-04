@@ -557,11 +557,25 @@ export async function updateUser(user: IUpdateUser) {
   }
 }
 
-
-
 // ============================== FOLLOW USER
 export async function followUser(followerId: string, followedId: string) {
   try {
+    // Primero, verifica si ya existe una relación de seguimiento
+    const existingFollow = await databases.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.followsCollectionId,
+      [
+        Query.equal("follower", followerId),
+        Query.equal("followed", followedId)
+      ]
+    );
+
+    // Si ya existe una relación, no hagas nada y devuelve la relación existente
+    if (existingFollow.documents.length > 0) {
+      return existingFollow.documents[0];
+    }
+
+    // Si no existe, crea una nueva relación de seguimiento
     const newFollow = await databases.createDocument(
       appwriteConfig.databaseId,
       appwriteConfig.followsCollectionId,
