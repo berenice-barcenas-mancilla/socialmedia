@@ -22,6 +22,11 @@ const UserCard = ({ user }: UserCardProps) => {
 
   const [isFollowing, setIsFollowing] = useState(false);
 
+  // Si el usuario de la tarjeta es el usuario actual, no renderizamos nada
+  if (user.$id === currentUser.id) {
+    return null;
+  }
+
   useEffect(() => {
     if (followers) {
       setIsFollowing(followers.documents.some((follow: any) => follow.follower.$id === currentUser.id));
@@ -60,16 +65,14 @@ const UserCard = ({ user }: UserCardProps) => {
         </p>
       </div>
 
-      {currentUser.id !== user.$id && (
-        <Button 
-          type="button" 
-          size="sm" 
-          className="shad-button_primary px-5"
-          onClick={handleFollowUser}
-        >
-          {isFollowing ? "Dejar de seguir" : "Seguir"}
-        </Button>
-      )}
+      <Button 
+        type="button" 
+        size="sm" 
+        className="shad-button_primary px-5"
+        onClick={handleFollowUser}
+      >
+        {isFollowing ? "Dejar de seguir" : "Seguir"}
+      </Button>
     </Link>
   );
 };
