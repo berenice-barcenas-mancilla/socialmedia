@@ -1,6 +1,5 @@
 import { Models } from "appwrite";
 import { Link } from "react-router-dom";
-
 import { PostStats } from "@/components/shared";
 import { multiFormatDateString } from "@/lib/utils";
 import { useUserContext } from "@/context/AuthContext";
@@ -15,73 +14,64 @@ const PostCard = ({ post }: PostCardProps) => {
   if (!post.creator) return null;
 
   return (
-    <div className="post-card">
-      <div className="flex-between">
-        <div className="flex items-center gap-3">
+    <div className="post-card w-full rounded-xl shadow-md overflow-hidden">
+      <div className="p-4">
+        <div className="flex items-center gap-3 mb-4">
           <Link to={`/profile/${post.creator.$id}`}>
             <img
-              src={
-                post.creator?.imageUrl ||
-                "/assets/icons/profile-placeholder.svg"
-              }
+              src={post.creator?.imageUrl || "/assets/icons/profile-placeholder.svg"}
               alt="creator"
-              className="w-12 lg:h-12 rounded-full"
+              className="w-12 h-12 rounded-full object-cover"
             />
           </Link>
 
           <div className="flex flex-col">
-            <p className="text-dark-2 font-semibold text-base">
+            <p className="text-dark-2 font-semibold text-sm sm:text-base">
               {post.creator.name}
             </p>
-            <div className="flex-center gap-2 text-dark-1">
-              <p className="subtle-semibold lg:small-regular">
+            <div className="flex gap-2 text-dark-3 text-xs">
+              <p className="subtle-semibold">
                 {multiFormatDateString(post.$createdAt)}
               </p>
               •
-              <p className="subtle-semibold lg:small-regular">
+              <p className="subtle-semibold">
                 {post.location}
               </p>
             </div>
           </div>
         </div>
 
-        <Link
-          to={`/update-post/${post.$id}`}
-          className={`${user.id !== post.creator.$id && "hidden"}`}>
-          <img
-            src="/assets/icons/edit.svg"
-            alt="edit"
-            width={20}
-            height={20}
-          />
+        <Link to={`/posts/${post.$id}`} className="block">
+          {post.imageUrl && (
+            <img
+              src={post.imageUrl}
+              alt="post image"
+              className="w-full h-auto rounded-lg mb-4 object-cover"
+            />
+          )}
+
+          <div className="text-dark-1">
+            <p className="font-bold text-base sm:text-lg mb-2 line-clamp-2">
+              {post.caption}
+            </p>
+            <p className="text-emerald-950 text-sm sm:text-base mb-2 line-clamp-3">
+              {post.description}
+            </p>
+            <ul className="flex flex-wrap gap-1 mt-2 text-xs sm:text-sm">
+              {post.tags.map((tag: string, index: number) => (
+                <li key={`${tag}${index}`} className="text-emerald-900">
+                  #{tag}
+                </li>
+              ))}
+            </ul>
+          </div>
         </Link>
       </div>
 
-      <Link to={`/posts/${post.$id}`}>
-        <div className="small-medium lg:base-medium py-5">
-          <p className="text-dark-1 font-bold text-lg">{post.caption}</p>
-          <p className="mt-2 text-emerald-950 text-sm">{post.description}</p>
-          <ul className="flex gap-1 mt-2 text-xs">
-            {post.tags.map((tag: string, index: number) => (
-              <li key={`${tag}${index}`} className="text-stone-700 small-regular">
-                #{tag}
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {post.imageUrl && (
-          <img
-            src={post.imageUrl}
-            alt="post image"
-            className="post-card_img"
-          />
-        )}
-      </Link>
-
-      <PostStats post={post} userId={user.id} />
+      <div className="p-4 ">
+        <PostStats post={post} userId={user.id} />
+      </div>
     </div>
   );
 };
-
 export default PostCard;
