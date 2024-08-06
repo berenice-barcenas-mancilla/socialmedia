@@ -14,56 +14,56 @@ const PostCard = ({ post }: PostCardProps) => {
   if (!post.creator) return null;
 
   return (
-    <div className="post-card flex flex-col">
-      <div className="flex justify-between items-start">
-        <div className="flex items-center gap-3">
-          <Link to={`/profile/${post.creator.$id}`}>
-            <img
-              src={post.creator?.imageUrl || "/assets/icons/profile-placeholder.svg"}
-              alt="creator"
-              className="w-12 h-12 rounded-full"
-            />
-          </Link>
+    <div className="post-card max-w-full md:max-w-md mx-auto p-4 border border-stone-200 rounded-lg shadow-md">
+      <div className="flex items-center gap-3 mb-4">
+        <Link to={`/profile/${post.creator.$id}`}>
+          <img
+            src={post.creator?.imageUrl || "/assets/icons/profile-placeholder.svg"}
+            alt="creator"
+            className="w-12 h-12 rounded-full object-cover"
+          />
+        </Link>
 
-          <div className="flex flex-col">
-            <p className="text-dark-2 font-semibold text-base">{post.creator.name}</p>
-            <div className="flex gap-2 text-dark-1">
-              <p className="subtle-semibold lg:small-regular">
-                {multiFormatDateString(post.$createdAt)}
-              </p>
-              •
-              <p className="subtle-semibold lg:small-regular">{post.location}</p>
-            </div>
+        <div className="flex flex-col">
+          <p className="text-dark-2 font-semibold text-base md:text-lg lg:text-xl break-words">
+            {post.creator.name}
+          </p>
+          <div className="flex gap-2 text-dark-3 text-xs md:text-sm lg:text-base">
+            <p className="subtle-semibold">
+              {multiFormatDateString(post.$createdAt)}
+            </p>
+            •
+            <p className="subtle-semibold">
+              {post.location}
+            </p>
           </div>
         </div>
-
-        <Link
-          to={`/update-post/${post.$id}`}
-          className={`${user.id !== post.creator.$id && "hidden"}`}>
-          <img src="/assets/icons/edit.svg" alt="edit" width={20} height={20} />
-        </Link>
       </div>
 
-      <Link to={`/posts/${post.$id}`}>
-        <div className="py-5">
-          <p className="text-dark-1 font-bold text-lg">{post.caption}</p>
-          <p className="mt-2 text-emerald-950 text-sm">{post.description}</p>
-          <ul className="flex gap-1 mt-2 text-xs">
+      <Link to={`/posts/${post.$id}`} className="block">
+        {post.imageUrl && (
+          <img
+            src={post.imageUrl}
+            alt="post image"
+            className="w-full h-auto rounded-lg mb-4 object-cover"
+          />
+        )}
+
+        <div className="text-lg font-semibold text-dark-1 mb-2">
+          <p className="font-bold text-base md:text-lg lg:text-xl break-words">
+            {post.caption}
+          </p>
+          <p className="mt-2 text-emerald-950 text-sm md:text-base lg:text-lg break-words">
+            {post.description}
+          </p>
+          <ul className="flex gap-1 mt-2 text-xs md:text-sm lg:text-base flex-wrap">
             {post.tags.map((tag: string, index: number) => (
-              <li key={`${tag}${index}`} className="text-stone-700 small-regular">
+              <li key={`${tag}${index}`} className="text-emerald-900">
                 #{tag}
               </li>
             ))}
           </ul>
         </div>
-
-        {post.imageUrl && (
-          <img
-            src={post.imageUrl}
-            alt="post image"
-            className="post-card_img w-full h-auto rounded-[24px] mb-5"
-          />
-        )}
       </Link>
 
       <PostStats post={post} userId={user.id} />

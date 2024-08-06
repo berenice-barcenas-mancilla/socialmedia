@@ -28,7 +28,6 @@ const PostDetails = () => {
 
   const handleDeletePost = () => {
     if (!id) {
-      // Handle the case when `id` is not available
       console.error("Post ID is not available");
       return;
     }
@@ -56,7 +55,6 @@ const PostDetails = () => {
     });
   };
 
-  // Check if the current user is the owner of the post
   const isOwner = user.id === post?.creator.$id;
 
   return (
@@ -79,13 +77,13 @@ const PostDetails = () => {
         <Loader />
       ) : (
         <div className="post_details-card">
-          {post?.imageUrl ? (
+          {post?.imageUrl && (
             <img
               src={post?.imageUrl}
               alt="post"
               className="post_details-img"
             />
-          ) : null} {/* No mostrar leyenda si no hay imagen */}
+          )}
 
           <div className="post_details-info">
             <div className="flex-between w-full">
@@ -101,7 +99,7 @@ const PostDetails = () => {
                   className="w-8 h-8 lg:w-12 lg:h-12 rounded-full"
                 />
                 <div className="flex gap-1 flex-col">
-                  <p className="text-dark-2 font-semibold text-base">
+                  <p className="text-dark-2 font-semibold text-base break-words">
                     {post?.creator.name}
                   </p>
                   <div className="flex-center gap-2 text-dark-3">
@@ -131,9 +129,7 @@ const PostDetails = () => {
                 <Button
                   onClick={handleDeletePost}
                   variant="ghost"
-                  className={`post_details-delete_btn hover:bg-red-500 ${!isOwner && "hidden"
-                    }`}
-                >
+                  className={`post_details-delete_btn hover:bg-red-500 ${!isOwner && "hidden"}`}>
                   <img
                     src="/assets/icons/delete.svg"
                     alt="delete"
@@ -147,13 +143,15 @@ const PostDetails = () => {
             <hr className="border w-full border-stone-100" />
 
             <div className="flex flex-col flex-1 w-full text-lg font-semibold text-dark-3">
-              <p className="text-dark-1 font-bold text-lg">{post?.caption}</p>
-              <p className="mt-2 text-emerald-950 text-sm">{post.description}</p>
+              <p className="text-dark-1 font-bold text-lg break-words text-justify">
+                {post?.caption}
+              </p>
+              <p className="mt-2 text-emerald-950 text-sm text-justify break-words">
+                {post.description}
+              </p>
               <ul className="flex gap-1 mt-2 text-xs">
                 {post?.tags.map((tag: string, index: number) => (
-                  <li
-                    key={`${tag}${index}`}
-                    className="text-emerald-900 small-regular">
+                  <li key={`${tag}${index}`} className="text-emerald-900 small-regular">
                     #{tag}
                   </li>
                 ))}
