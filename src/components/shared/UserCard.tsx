@@ -22,7 +22,6 @@ const UserCard = ({ user }: UserCardProps) => {
 
   const [isFollowing, setIsFollowing] = useState(false);
 
-  // Si el usuario de la tarjeta es el usuario actual, no renderizamos nada
   if (user.$id === currentUser.id) {
     return null;
   }
@@ -34,7 +33,7 @@ const UserCard = ({ user }: UserCardProps) => {
   }, [followers, currentUser.id]);
 
   const handleFollowUser = (e: React.MouseEvent) => {
-    e.preventDefault(); // Prevent navigation when clicking the button
+    e.preventDefault();
     if (isFollowing) {
       const followDocument = followers?.documents.find(
         (follow: any) => follow.follower.$id === currentUser.id
@@ -46,7 +45,7 @@ const UserCard = ({ user }: UserCardProps) => {
     setIsFollowing(!isFollowing);
   };
 
-  if (isFollowersLoading) return null; // Or a loading indicator
+  if (isFollowersLoading) return null;
 
   return (
     <Link to={`/profile/${user.$id}`} className="user-card">
