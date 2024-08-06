@@ -1,6 +1,7 @@
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui";
 import { Loader } from "@/components/shared";
+import Swal from 'sweetalert2';
 import { GridPostList, PostStats } from "@/components/shared";
 import {
   useGetPostById,
@@ -26,9 +27,37 @@ const PostDetails = () => {
   );
 
   const handleDeletePost = () => {
-    deletePost({ postId: id, imageId: post?.imageId });
-    navigate(-1);
+    if (!id) {
+      // Handle the case when `id` is not available
+      console.error("Post ID is not available");
+      return;
+    }
+
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: "¿Quieres eliminar esta publicación?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result: any) => {
+      if (result.isConfirmed) {
+        deletePost({ postId: id });
+        Swal.fire(
+          '¡Eliminado!',
+          'La publicación ha sido eliminada.',
+          'success'
+        ).then(() => {
+          navigate(-1);
+        });
+      }
+    });
   };
+
+  // Check if the current user is the owner of the post
+  const isOwner = user.id === post?.creator.$id;
 
   return (
     <div className="post_details-container">
@@ -90,7 +119,7 @@ const PostDetails = () => {
               <div className="flex-center gap-4">
                 <Link
                   to={`/update-post/${post?.$id}`}
-                  className={`${user.id !== post?.creator.$id && "hidden"}`}>
+                  className={`${!isOwner && "hidden"}`}>
                   <img
                     src="/assets/icons/edit.svg"
                     alt="edit"
@@ -102,9 +131,9 @@ const PostDetails = () => {
                 <Button
                   onClick={handleDeletePost}
                   variant="ghost"
-                  className={`post_details-delete_btn hover:bg-red ${
-                    user.id !== post?.creator.$id && "hidden"
-                  }`}>
+                  className={`post_details-delete_btn hover:bg-red-500 ${!isOwner && "hidden"
+                    }`}
+                >
                   <img
                     src="/assets/icons/delete.svg"
                     alt="delete"

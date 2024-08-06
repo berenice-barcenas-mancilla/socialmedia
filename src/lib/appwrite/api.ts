@@ -342,25 +342,22 @@ export async function updatePost(post: IUpdatePost) {
 
 
 // ============================== DELETE POST
-export async function deletePost(postId?: string, imageId?: string) {
-  if (!postId || !imageId) return;
-
+export async function deletePost(postId: string) {
   try {
-    const statusCode = await databases.deleteDocument(
+    await databases.deleteDocument(
       appwriteConfig.databaseId,
       appwriteConfig.postCollectionId,
       postId
     );
 
-    if (!statusCode) throw Error;
-
-    await deleteFile(imageId);
-
-    return { status: "Ok" };
+    return { status: 'ok' };
   } catch (error) {
-    console.log(error);
+    console.error('Error deleting post:', error);
+    throw error;
   }
 }
+
+
 
 // ============================== LIKE / UNLIKE POST
 export async function likePost(postId: string, likesArray: string[]) {
